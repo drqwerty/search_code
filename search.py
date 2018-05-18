@@ -5,7 +5,6 @@ then create problem instances and solve them with calls to the various search
 functions."""
 
 from __future__ import generators
-
 from utils import *
 import random
 import sys
@@ -129,14 +128,14 @@ def graph_search(problem, fringe):
     while fringe:
         node = fringe.pop()
         if problem.goal_test(node.state):
-            print("Expanded nodes: ", expanded_nodes_count, expanded_nodes)
+            print "Expanded nodes: ", expanded_nodes_count, expanded_nodes
             return node
         if node.state not in closed:
-            closed[node.state] = True         # And this
+            closed[node.state] = True  # And this
             fringe.extend(node.expand(problem), problem)
             expanded_nodes.append(node)
             expanded_nodes_count += 1
-            print(node.path())
+            print node.path()
     return None
 
 
@@ -149,13 +148,16 @@ def depth_first_graph_search(problem):
     """Search the deepest nodes in the search tree first. [p 74]"""
     return graph_search(problem, Stack())
 
+
 def ramification_dimensioning_graph_search(problem):
     """This is mine"""
     return graph_search(problem, RamificationDimensioningQueue())
 
+
 def ramification_dimensioning_h_graph_search(problem):
     """This is mine"""
     return graph_search(problem, RamificationDimensioningHQueue())
+
 
 def depth_limited_search(problem, limit=50):
     """[Fig. 3.12]"""
@@ -190,7 +192,7 @@ def iterative_deepening_search(problem):
             return result
 
 
-#______________________________________________________________________________
+# ______________________________________________________________________________
 # Informed (Heuristic) Search
 
 def best_first_graph_search(problem, f):
@@ -204,8 +206,11 @@ def best_first_graph_search(problem, f):
     f = memoize(f, 'f')
     return graph_search(problem, PriorityQueue(min, f))
 
+
 greedy_best_first_graph_search = best_first_graph_search
-    # Greedy best-first search is accomplished by specifying f(n) = h(n).
+
+
+# Greedy best-first search is accomplished by specifying f(n) = h(n).
 
 def astar_search(problem, h=None):
     """A* search is best-first graph search with f(n) = g(n)+h(n).
@@ -217,7 +222,6 @@ def astar_search(problem, h=None):
     """
 
     pass
-
 
 
 # _____________________________________________________________________________
