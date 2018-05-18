@@ -5,6 +5,7 @@ then create problem instances and solve them with calls to the various search
 functions."""
 
 from __future__ import generators
+
 from utils import *
 import random
 import sys
@@ -121,14 +122,21 @@ def graph_search(problem, fringe):
     The argument fringe should be an empty queue.
     If two paths reach a state, only use the best one. [Fig. 3.18]"""
     closed = {}
+    # This is mine
+    expanded_nodes_count = 0
+    expanded_nodes = []
     fringe.append(Node(problem.initial))
     while fringe:
         node = fringe.pop()
         if problem.goal_test(node.state):
+            print("Expanded nodes: ", expanded_nodes_count, expanded_nodes)
             return node
         if node.state not in closed:
-            closed[node.state] = True
-            fringe.extend(node.expand(problem))
+            closed[node.state] = True         # And this
+            fringe.extend(node.expand(problem), problem)
+            expanded_nodes.append(node)
+            expanded_nodes_count += 1
+            print(node.path())
     return None
 
 
@@ -141,6 +149,13 @@ def depth_first_graph_search(problem):
     """Search the deepest nodes in the search tree first. [p 74]"""
     return graph_search(problem, Stack())
 
+def ramification_dimensioning_graph_search(problem):
+    """This is mine"""
+    return graph_search(problem, RamificationDimensioningQueue())
+
+def ramification_dimensioning_h_graph_search(problem):
+    """This is mine"""
+    return graph_search(problem, RamificationDimensioningHQueue())
 
 def depth_limited_search(problem, limit=50):
     """[Fig. 3.12]"""
